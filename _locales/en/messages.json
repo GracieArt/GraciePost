@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "GraciePost",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Tool to help Gracie post images to Discord.",
+    "description": "Description of the add-on."
+  }
+}

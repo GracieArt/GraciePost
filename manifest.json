@@ -1,0 +1,39 @@
+{
+
+  "manifest_version": 2,
+  "name": "GraciePost",
+  "version": "2.5.6",
+  "description": "Tool to help Gracie post images to Discord.",
+  "default_locale": "en",
+  "icons": {
+    "48": "icons/icon.png"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "strict_min_version": "56.0a1",
+      "id": "graciepost@graciebell.art"
+    }
+  },
+
+  "background": {
+    "scripts": ["graciepost.js"]
+  },
+
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true
+  },
+
+  "permissions": [
+    "menus",
+    "activeTab",
+  	"storage"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/icon.png",
+    "default_popup": "options.html",
+    "browser_style": true
+  }
+}
