@@ -4,6 +4,7 @@
   "name": "GraciePost",
   "version": "2.5.6",
   "description": "Tool to help Gracie post images to Discord.",
+  "homepage_url": "https://github.com/GracieArt/GraciePost",
   "default_locale": "en",
   "icons": {
     "48": "icons/icon.png"
