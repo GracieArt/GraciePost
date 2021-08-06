@@ -9,6 +9,7 @@ function saveOptions(e) {
     sendurl: document.querySelector("#sendurl").value,
     churl: document.querySelector("#churl").value
   })
+  browser.runtime.reload()
 }
 
 function restoreOptions() {
