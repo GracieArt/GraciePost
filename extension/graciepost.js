@@ -23,6 +23,11 @@ var sites = {
 		name : "Furbooru",
 		useAPI : true,
 		overrideEmbed : true
+	},
+	furaffinity : {
+		name : "Fur Affinity",
+		useAPI : false,
+		overrideEmbed : false
 	}
 }
 

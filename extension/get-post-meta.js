@@ -25,6 +25,13 @@ send(
     desc      : document.getElementsByClassName("legacy-journal")[0].innerText,
     pfp       : document.querySelector("[data-hook='deviation_meta']").querySelector("[data-hook='user_avatar']").currentSrc.split("?")[0]
   }
+: (url.includes("furaffinity.net")) ?
+  {
+    title     : document.getElementsByClassName("submission-title")[0].innerText,
+    artist    : document.getElementsByClassName("submission-id-sub-container")[0].querySelector("a").innerText,
+    desc      : document.getElementsByClassName("submission-description")[0].innerText,
+    pfp       : document.getElementsByClassName("submission-id-avatar")[0].querySelector("img").currentSrc
+  }
 : false)
 
 
