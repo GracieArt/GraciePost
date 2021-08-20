@@ -32,6 +32,13 @@ send(
     desc      : document.getElementsByClassName("submission-description")[0].innerText,
     pfp       : document.getElementsByClassName("submission-id-avatar")[0].querySelector("img").currentSrc
   }
+: (url.includes("www.pillowfort.social/posts")) ?
+  {
+    title     : document.getElementsByClassName("title")[0].innerText,
+    artist    : document.getElementsByClassName("citation")[0].querySelector("a").innerText,
+    desc      : document.getElementsByClassName("content")?.[0]?.innerText,
+    pfp       : document.getElementsByClassName("side-info")[0].querySelector("img").currentSrc
+  }
 : false)
 
 

@@ -28,6 +28,11 @@ var sites = {
 		name : "Fur Affinity",
 		useAPI : false,
 		overrideEmbed : false
+	},
+	pillowfort : {
+		name : "Pillowfort",
+		useAPI : false,
+		overrideEmbed : false
 	}
 }
 
