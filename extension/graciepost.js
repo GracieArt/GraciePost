@@ -2,7 +2,7 @@ var sites = {
 	twitter : {
 		name : "Twitter",
 		useAPI : false,
-    overrideEmbed : true
+    overrideEmbed : false
 	},
   tweetdeck : {
     name : "Twitter",
