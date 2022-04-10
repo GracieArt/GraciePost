@@ -1,9 +1,10 @@
 var sites = {
-	twitter : {
-		name : "Twitter",
-		useAPI : false,
-    overrideEmbed : false
-	},
+	// Need to get API key
+	// twitter : {
+	// 	name : "Twitter",
+	// 	useAPI : true,
+  //   overrideEmbed : true
+	// },
   tweetdeck : {
     name : "Twitter",
     useAPI : false,
