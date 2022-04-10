@@ -52,8 +52,7 @@ browser.storage.sync.get("sendurl")
 		//console.log("sendurl: " + sendurl)
 	}, onError)
 
-var chJSON
-var categories
+var menuData
 var churl
 browser.storage.sync.get("churl")
 	.then((result) => {
@@ -61,9 +60,7 @@ browser.storage.sync.get("churl")
 		fetch(churl)
 			.then(response => response.json())
 			.then(data => {
-				chJSON = data
-				categories = chJSON.categories
-				//console.log("categories: " + categories)
+				menuData = data
 				createMenuItems()
 			})
 	}, onError)
@@ -71,65 +68,54 @@ browser.storage.sync.get("churl")
 
 // Create the menu items
 
-let createCatMenu = (input) => {
-	browser.menus.create({
-		id: input.name,
-		title: input.name,
-		contexts: ["image"]
-	})
-}
-
-let createChMenu = (input, catID) => {
-	browser.menus.create({
-		id: input.name,
-		parentId: catID,
-		title: input.name
-	})
-}
-
 function createMenuItems() {
-	for (const cat in categories) {
-		let category = categories[cat]
-		createCatMenu(category)
-
-		for (const ch in category.channels) {
-			let channel = category.channels[ch]
-		 	createChMenu(channel, category.name)
-		}
-	}
+	menuData.forEach(menuLevel => {
+		menuLevel.items.forEach(item => {
+			browser.menus.create({
+				id				: item.id,
+				title			: item.title,
+				parentId	: item.parentId,
+				contexts	: ["image"]
+			})
+		})
+	})
 }
 
 
 // When a menu item is clicked
-var post = {}
-
 browser.menus.onClicked.addListener((info, tab) => {
   console.log("saving post")
 
 	// This is the object that gets sent to the bot
-	post = {}
-	post.imageLink = info.srcUrl
-	post.postLink = info.pageUrl
-	post.channel = categories[info.parentMenuItemId].channels[info.menuItemId].id
-
-	post.siteName = getSiteName(info.pageUrl) // Extract the name of the site from the url
-	site = sites[getSiteName(info.pageUrl)] // If site is in the sites object, this will contain site-specific options
-
-	if (site) {
-		post.siteName = site.name
-
-		if (site.overrideEmbed) {	// overrides the embed and just posts the link
-			postImage({...post, overrideEmbed : true})
-
-		} else if (site.useAPI) { // if we ARE using an api:
-			postImageFromApi(site.name)
-
-		} else { //  if we aren't using the site's api, get metadata from the page
-			postImageFromPage()
-		}
-	} else { // if the site isn't in the sites object, send the post without any metadata
-		postImage(post)
+	let post = {
+		imageLink		: info.srcUrl,
+		postLink		: info.pageUrl,
+		channel 		: info.menuItemId
 	}
+
+	// If site is in the sites object, this will contain site-specific options
+	site = sites[getSiteName(info.pageUrl)]
+
+	if (!site) {
+		// if the site isn't in the sites object, send the post without any special metadata
+		// Extract the name of the site from the url
+		post.siteName = getSiteName(info.pageUrl)
+		postImage(post)
+		return
+	}
+
+
+	post.siteName = site.name
+	if (site.overrideEmbed) {	// overrides the embed and just posts the link
+		postImage({...post, overrideEmbed : true})
+
+	} else if (site.useAPI) { // if we ARE using an api:
+		postImageFromApi(site.name)
+
+	} else { // if we aren't using the site's api, get metadata from the page
+		postImageFromPage()
+	}
+
 })
 
 
