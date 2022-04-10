@@ -1,9 +1,8 @@
 var sites = {
-	// Need to get API key
 	// twitter : {
 	// 	name : "Twitter",
-	// 	useAPI : true,
-  //   overrideEmbed : true
+	// 	useAPI : false,
+  //   overrideEmbed : false
 	// },
   tweetdeck : {
     name : "Twitter",
@@ -82,13 +81,14 @@ function createMenuItems() {
 	})
 }
 
+var post
 
 // When a menu item is clicked
 browser.menus.onClicked.addListener((info, tab) => {
-  console.log("saving post")
+  console.log("menu clicked")
 
 	// This is the object that gets sent to the bot
-	let post = {
+	post = {
 		imageLink		: info.srcUrl,
 		postLink		: info.pageUrl,
 		channel 		: info.menuItemId
@@ -145,6 +145,7 @@ function getSiteName(url) {
 
 
 function postImage(postData) {
+	console.log('sending post')
 	console.log(postData)
 	postData.key = key
 	fetch(sendurl, {
@@ -155,11 +156,13 @@ function postImage(postData) {
 }
 
 
-function postImageFromApi(siteName) {
+async function postImageFromApi(siteName) {
 	switch (siteName) {
 		case "Furbooru":
 			// get post id from url
-			id = info.pageUrl.substring(info.pageUrl.indexOf("images/") + 7)
+			let preceedingStr = "images/"
+			let start = info.pageUrl.indexOf(preceedingStr) + preceedingStr.length
+			id = info.pageUrl.substring(start)
 			id = (id.includes("?")) ? id.substring(0, id.indexOf("?")) : id
 
 			fetch("https://furbooru.org/api/v1/json/images/" + id)
@@ -181,6 +184,16 @@ function postImageFromApi(siteName) {
 					postImage(post)
 				})
 			break
+
+		case 'Twitter':
+			let re = /twitter\.com\/.*\/status(?:es)?\/([^\/\?]+)/
+			let matches = info.pageUrl.match(re)
+			if (matches.length === 2) {
+				let id = matches[1]
+				let url = `https://api.twitter.com/2/tweets/${id}?user.fields=name,profile_image_url`
+				// not finished!
+			}
+		break
 	}
 }
 
