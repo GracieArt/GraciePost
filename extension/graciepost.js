@@ -74,7 +74,7 @@ function createMenuItems() {
 			browser.menus.create({
 				id				: item.id,
 				title			: item.title,
-				parentId	: item.parentId,
+				parentId	: item.parentId || undefined,
 				contexts	: ["image"]
 			})
 		})
