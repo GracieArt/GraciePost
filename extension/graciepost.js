@@ -22,7 +22,7 @@ var sites = {
 	furbooru : {
 		name : "Furbooru",
 		useAPI : true,
-		overrideEmbed : true
+		overrideEmbed : false
 	},
 	furaffinity : {
 		name : "Fur Affinity",
@@ -111,7 +111,7 @@ browser.menus.onClicked.addListener((info, tab) => {
 		postImage({...post, overrideEmbed : true})
 
 	} else if (site.useAPI) { // if we ARE using an api:
-		postImageFromApi(site.name)
+		postImageFromApi(site.name, info.pageUrl)
 
 	} else { // if we aren't using the site's api, get metadata from the page
 		postImageFromPage()
@@ -156,13 +156,13 @@ function postImage(postData) {
 }
 
 
-async function postImageFromApi(siteName) {
+async function postImageFromApi(siteName, pageUrl) {
 	switch (siteName) {
 		case "Furbooru":
 			// get post id from url
 			let preceedingStr = "images/"
-			let start = info.pageUrl.indexOf(preceedingStr) + preceedingStr.length
-			id = info.pageUrl.substring(start)
+			let start = pageUrl.indexOf(preceedingStr) + preceedingStr.length
+			id = pageUrl.substring(start)
 			id = (id.includes("?")) ? id.substring(0, id.indexOf("?")) : id
 
 			fetch("https://furbooru.org/api/v1/json/images/" + id)
@@ -187,7 +187,7 @@ async function postImageFromApi(siteName) {
 
 		case 'Twitter':
 			let re = /twitter\.com\/.*\/status(?:es)?\/([^\/\?]+)/
-			let matches = info.pageUrl.match(re)
+			let matches = pageUrl.match(re)
 			if (matches.length === 2) {
 				let id = matches[1]
 				let url = `https://api.twitter.com/2/tweets/${id}?user.fields=name,profile_image_url`
